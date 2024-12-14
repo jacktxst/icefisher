@@ -2,8 +2,11 @@ extends Node
 
 class_name ItemPickup
 
+# When you attach a script that has an export var to 
+# a node, that variable gets exposed in the Godot 
+# editor as a property of the node that you can edit 
+# in the Inspector
 @export var item_id : int
-
 
 func _on_body_entered(body: Node3D) -> void:
 	if body == $"/root/Node3D/Icefisher": # Replace with function body.
@@ -14,5 +17,3 @@ func _on_body_entered(body: Node3D) -> void:
 				$"/root/Node3D/Icefisher/InventoryPanel".update_gui()
 				queue_free()
 				return
-				
-				

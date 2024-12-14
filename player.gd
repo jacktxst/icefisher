@@ -12,28 +12,38 @@ var rod_level = 1
 var drill_level = 1
 var drill_energy = 100
 var inventory = []
+var selected_item : int = 2
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	inventory = [
-		{"count":0,"id":0},
-		{"count":1,"id":$"../Items".get_id("Bobber")},
-		{"count":1,"id":$"../Items".get_id("Ice Drill")},
-		{"count":1,"id":$"../Items".get_id("Fishing Rod")}
+		{"count":0,"id":0,"equipped":true},
+		{"count":1,"equipped":true,"id":$"../Items".get_id("Bobber")},
+		{"count":1,"equipped":true,"id":$"../Items".get_id("Ice Drill")},
+		{"count":1,"equipped":true,"id":$"../Items".get_id("Fishing Rod")}
 	]
 	$InventoryPanel.update_gui()
+	$SelectedItemLabel.text = "Selected Item: " +  $"/root/Node3D/Items".items[inventory[selected_item].id].name
+
 
 func _input(event: InputEvent) -> void:
 	if not paused and event is InputEventMouseMotion:
 		$Camera3D.rotate_x(event.screen_relative.y * -1 * LOOK_SENSITIVITY)
 		rotate_y(event.screen_relative.x * -1 * LOOK_SENSITIVITY)
 		pass
-	if event.is_action_pressed("dev_icehole"):
-		if drill_energy < 1:
-			return
-		drill_energy -= 1
-		$"/root/Node3D/LakeSurface/CSGIce/CSGHole".position.x = position.x
-		$"/root/Node3D/LakeSurface/CSGIce/CSGHole".position.z = position.z
+	
+	if event.is_action_pressed("switch_item"):
+		var index = ( selected_item + 1 ) % len(inventory)
+		while(1):
+			if $"/root/Node3D/Items".items[inventory[index].id].holdable:
+				selected_item = index
+				$SelectedItemLabel.text = "Selected Item: " +  $"/root/Node3D/Items".items[inventory[index].id].name
+				break
+			index = ( index + 1 ) % len(inventory)
+	
+	if event.is_action_pressed("use_item"):
+		$"/root/Node3D/Items".use_item(inventory[selected_item].id)
+	
 	if event.is_action_pressed("game_pause"):
 		if paused:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED

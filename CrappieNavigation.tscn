@@ -1,7 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://b2f5siq6ocxuc"]
+[gd_scene load_steps=6 format=3 uid="uid://b2f5siq6ocxuc"]
 
 [ext_resource type="Script" path="res://crappie_fish.gd" id="1_jr57h"]
 [ext_resource type="ArrayMesh" uid="uid://ci8kto10lp1tk" path="res://Fish people/FCrappie.obj" id="2_v04si"]
+[ext_resource type="Script" path="res://timer1.gd" id="3_npxdn"]
 
 [sub_resource type="NavigationMesh" id="NavigationMesh_w1d4o"]
 vertices = PackedVector3Array(3, -0.55, 3, 3, -0.55, 7, 7, -0.55, 7, 7, -0.55, 3)
@@ -30,3 +31,16 @@ shape = SubResource("ConvexPolygonShape3D_7plw2")
 
 [node name="NavigationAgent3D" type="NavigationAgent3D" parent="Crappiefish"]
 debug_enabled = true
+
+[node name="Timer" type="Timer" parent="Crappiefish"]
+wait_time = 2.5
+script = ExtResource("3_npxdn")
+
+[node name="Timer2" type="Timer" parent="Crappiefish"]
+wait_time = 0.05
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Crappiefish/Timer" to="Crappiefish" method="_on_timer_timeout"]
+[connection signal="timeout" from="Crappiefish/Timer2" to="Crappiefish" method="_on_timer_2_timeout"]
+[connection signal="timeout" from="Crappiefish/Timer2" to="Crappiefish/Timer" method="_on_timer_2_timeout"]
