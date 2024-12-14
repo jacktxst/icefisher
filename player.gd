@@ -7,6 +7,9 @@ const LOOK_SENSITIVITY = 0.001
 
 var paused = false
 
+# 
+
+
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 
