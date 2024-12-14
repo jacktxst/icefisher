@@ -8,16 +8,31 @@ const LOOK_SENSITIVITY = 0.001
 var paused = false
 
 # 
-
+var rod_level = 1
+var drill_level = 1
+var drill_energy = 100
+var inventory = []
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	inventory = [
+		{"count":1,"id":$"../Items".get_id("Bobber")},
+		{"count":1,"id":$"../Items".get_id("Ice Drill")},
+		{"count":1,"id":$"../Items".get_id("Fishing Rod")},
+	]
+	$InventoryPanel.update_gui()
 
 func _input(event: InputEvent) -> void:
 	if not paused and event is InputEventMouseMotion:
 		$Camera3D.rotate_x(event.screen_relative.y * -1 * LOOK_SENSITIVITY)
 		rotate_y(event.screen_relative.x * -1 * LOOK_SENSITIVITY)
 		pass
+	if event.is_action_pressed("dev_icehole"):
+		if drill_energy < 1:
+			return
+		drill_energy -= 1
+		$"/root/Node3D/LakeSurface/CSGIce/CSGHole".position.x = position.x
+		$"/root/Node3D/LakeSurface/CSGIce/CSGHole".position.z = position.z
 	if event.is_action_pressed("game_pause"):
 		if paused:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -26,7 +41,8 @@ func _input(event: InputEvent) -> void:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 			paused = true
 				
-		
+func _process(delta: float) -> void:
+	$DrillEnergyLabel.text = "drill_energy" + str(drill_energy)
 
 func _physics_process(delta: float) -> void:
 	if paused:
