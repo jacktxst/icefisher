@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://bnm7vcoe3yxbc"]
+[gd_scene load_steps=22 format=3 uid="uid://bnm7vcoe3yxbc"]
 
 [ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="1_4lorg"]
 [ext_resource type="Texture2D" uid="uid://bq6ytvngu241t" path="res://terrain_textures/photoreal_ice_08-512x512.png" id="1_mr6mo"]
@@ -12,7 +12,6 @@
 [ext_resource type="LabelSettings" uid="uid://4gpdmnytqaa0" path="res://LabelSetting.tres" id="9_52lrs"]
 [ext_resource type="Script" path="res://inventory_panel.gd" id="10_kxyy1"]
 [ext_resource type="Script" path="res://scripts/item_pickup.gd" id="11_jeuwx"]
-[ext_resource type="PackedScene" uid="uid://b2f5siq6ocxuc" path="res://CrappieNavigation.tscn" id="13_tts7p"]
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_m2lyw"]
 data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
@@ -49,10 +48,10 @@ fog_height_density = 3.5294
 fog_depth_curve = 4.59479
 volumetric_fog_density = 0.3294
 
-[sub_resource type="BoxMesh" id="BoxMesh_0icq7"]
+[sub_resource type="BoxMesh" id="BoxMesh_ocjgr"]
 
-[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_dnr33"]
-points = PackedVector3Array(-0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5)
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_brfqu"]
+data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
 
 [node name="Node3D" type="Node3D"]
 
@@ -98,7 +97,7 @@ shader_params/u_colormap_opacity_per_texture = null
 script = ExtResource("7_dy4ad")
 
 [node name="Icefisher" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 54.5798, 40.416, 37.3396)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.04542, 3.23687, -3.58997)
 script = ExtResource("6_blitg")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Icefisher"]
@@ -138,15 +137,14 @@ grow_vertical = 2
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_e3ypr")
 
-[node name="ItemPickup" type="RigidBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.24917, 0)
-visible = false
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.17544, 0)
 script = ExtResource("11_jeuwx")
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="ItemPickup"]
-mesh = SubResource("BoxMesh_0icq7")
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D"]
+mesh = SubResource("BoxMesh_ocjgr")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="ItemPickup"]
-shape = SubResource("ConvexPolygonShape3D_dnr33")
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("ConcavePolygonShape3D_brfqu")
 
-[node name="CrappieNavigation" parent="." instance=ExtResource("13_tts7p")]
+[connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]

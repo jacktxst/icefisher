@@ -16,9 +16,10 @@ var inventory = []
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	inventory = [
+		{"count":0,"id":0},
 		{"count":1,"id":$"../Items".get_id("Bobber")},
 		{"count":1,"id":$"../Items".get_id("Ice Drill")},
-		{"count":1,"id":$"../Items".get_id("Fishing Rod")},
+		{"count":1,"id":$"../Items".get_id("Fishing Rod")}
 	]
 	$InventoryPanel.update_gui()
 
