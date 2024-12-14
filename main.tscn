@@ -1,0 +1,79 @@
+[gd_scene load_steps=14 format=3 uid="uid://bnm7vcoe3yxbc"]
+
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="1_4lorg"]
+[ext_resource type="Texture2D" uid="uid://bq6ytvngu241t" path="res://terrain_textures/photoreal_ice_08-512x512.png" id="1_mr6mo"]
+[ext_resource type="Resource" path="res://terraindata/data.hterrain" id="2_t6m2x"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="3_5ltlh"]
+[ext_resource type="Texture2D" uid="uid://v1nk2a8xn84b" path="res://terrain_textures/snow.png" id="4_t5vgp"]
+[ext_resource type="Texture2D" uid="uid://dl46lx0kcd5uv" path="res://terrain_textures/stone-1024.jpg" id="5_88dwp"]
+[ext_resource type="Script" path="res://player.gd" id="6_blitg"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8hxja"]
+transparency = 1
+albedo_texture = ExtResource("1_mr6mo")
+uv1_scale = Vector3(16, 16, 16)
+
+[sub_resource type="PlaneMesh" id="PlaneMesh_1xw2n"]
+lightmap_size_hint = Vector2i(12, 12)
+material = SubResource("StandardMaterial3D_8hxja")
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_ghhmc"]
+data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
+
+[sub_resource type="Resource" id="Resource_mbty6"]
+script = ExtResource("3_5ltlh")
+mode = 0
+textures = [[ExtResource("4_t5vgp"), ExtResource("5_88dwp")], [null, null]]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5kjdr"]
+
+[sub_resource type="Environment" id="Environment_dd0f8"]
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="LakeSurface" type="StaticBody3D" parent="."]
+transform = Transform3D(128, 0, 0, 0, 128, 0, 0, 0, 128, 0, 0, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="LakeSurface"]
+mesh = SubResource("PlaneMesh_1xw2n")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LakeSurface"]
+shape = SubResource("ConcavePolygonShape3D_ghhmc")
+
+[node name="HTerrain" type="Node3D" parent="."]
+script = ExtResource("1_4lorg")
+centered = true
+_terrain_data = ExtResource("2_t6m2x")
+chunk_size = 32
+collision_enabled = true
+collision_layer = 1
+collision_mask = 1
+shader_type = "Classic4"
+custom_shader = null
+custom_globalmap_shader = null
+texture_set = SubResource("Resource_mbty6")
+render_layers = 1
+cast_shadow = 1
+shader_params/u_ground_uv_scale_per_texture = null
+shader_params/u_depth_blending = true
+shader_params/u_triplanar = null
+shader_params/u_tile_reduction = null
+shader_params/u_globalmap_blend_start = null
+shader_params/u_globalmap_blend_distance = null
+shader_params/u_colormap_opacity_per_texture = null
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(0.935897, -0.113148, 0.333607, 0.000970069, 0.947837, 0.318753, -0.352272, -0.297997, 0.887188, 0, 0, 0)
+visible = false
+
+[node name="Player" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 54.5798, 40.416, 37.3396)
+script = ExtResource("6_blitg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Player"]
+shape = SubResource("CapsuleShape3D_5kjdr")
+
+[node name="Camera3D" type="Camera3D" parent="Player"]
+environment = SubResource("Environment_dd0f8")
