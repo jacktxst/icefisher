@@ -38,6 +38,7 @@ func _input(event: InputEvent) -> void:
 		while(1):
 			if $"/root/Node3D/Items".items[inventory[index].id].holdable:
 				selected_item = index
+				$WeaponViewModel.mesh =load($"/root/Node3D/Items".items[inventory[index].id].viewmodel) as Mesh
 				$SelectedItemLabel.text = "Selected Item: " +  $"/root/Node3D/Items".items[inventory[index].id].name
 				break
 			index = ( index + 1 ) % len(inventory)
@@ -61,7 +62,7 @@ func _input(event: InputEvent) -> void:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 			paused = true
 
-	if event.is_action_pressed("Sprint") and $"../Shop".onScreen() and position.distance_to($"../Shop".currentPos()) < 3:
+	if event.is_action_pressed("Sprint") and is_instance_valid($"../Shop") and $"../Shop".onScreen() and position.distance_to($"../Shop".currentPos()) < 3:
 		print("open")
 	
 func _process(delta: float) -> void:

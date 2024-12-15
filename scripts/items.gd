@@ -8,11 +8,13 @@ var items = [
 	{
 		"max_count":1,
 		"holdable": true,
-		"name":"Ice Drill",},
+		"name":"Ice Drill",
+		"viewmodel":"res://models/viewmodels/drill.obj"},
 	{
 		"max_count":1,
 		"holdable": true,
-		"name":"Fishing Rod",},
+		"name":"Fishing Rod",
+		"viewmodel":"res://models/viewmodels/rod1.obj"},
 	{
 		"max_count":1,
 		"holdable": false,

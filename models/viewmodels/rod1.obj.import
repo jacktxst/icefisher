@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://cbk7urqw4d456"
+path="res://.godot/imported/rod1.obj-61d2c6279d17346f9ee50f41bf6a8f96.mesh"
+
+[deps]
+
+files=["res://.godot/imported/rod1.obj-61d2c6279d17346f9ee50f41bf6a8f96.mesh"]
+
+source_file="res://models/viewmodels/rod1.obj"
+dest_files=["res://.godot/imported/rod1.obj-61d2c6279d17346f9ee50f41bf6a8f96.mesh", "res://.godot/imported/rod1.obj-61d2c6279d17346f9ee50f41bf6a8f96.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

@@ -1,9 +1,10 @@
-[gd_scene load_steps=35 format=3 uid="uid://bnm7vcoe3yxbc"]
+[gd_scene load_steps=39 format=3 uid="uid://bnm7vcoe3yxbc"]
 
 [ext_resource type="Script" path="res://scripts/items.gd" id="1_7t2mv"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="2_onobx"]
 [ext_resource type="LabelSettings" uid="uid://4gpdmnytqaa0" path="res://LabelSetting.tres" id="3_238ka"]
 [ext_resource type="Script" path="res://scripts/inventory_panel.gd" id="4_urc4l"]
+[ext_resource type="ArrayMesh" uid="uid://7l7te5yrosnk" path="res://models/viewmodels/drill.obj" id="5_q8fh2"]
 [ext_resource type="Material" uid="uid://bkw5rn03p8voc" path="res://materials/ice.tres" id="5_shh4w"]
 [ext_resource type="Shader" path="res://water.gdshader" id="6_o5xlq"]
 [ext_resource type="Script" path="res://scripts/water_surface_triggers.gd" id="7_5y3qv"]
@@ -16,6 +17,9 @@
 [ext_resource type="Texture2D" uid="uid://erpgs7eh448m" path="res://terrain_textures/skyfinal_0.png" id="13_s4pnj"]
 [ext_resource type="Script" path="res://scripts/item_pickup.gd" id="14_tx6ee"]
 [ext_resource type="PackedScene" uid="uid://1ptiph4cakk3" path="res://scenes/jackshop.tscn" id="15_r0oxv"]
+[ext_resource type="Material" uid="uid://dds1vc2y7ker8" path="res://materials/bobber.tres" id="17_1b7vg"]
+[ext_resource type="ArrayMesh" uid="uid://brlvpykvxdubs" path="res://models/roca.obj" id="18_hl7vu"]
+[ext_resource type="ArrayMesh" uid="uid://bsjqiw56rbxrs" path="res://models/Tree3.obj" id="19_mynqp"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5kjdr"]
 
@@ -92,7 +96,7 @@ data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0
 script = ExtResource("1_7t2mv")
 
 [node name="Icefisher" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.04542, 3.23687, -3.58997)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -59.246, 3.23687, 3.01443)
 collision_layer = 4
 collision_mask = 19
 script = ExtResource("2_onobx")
@@ -166,6 +170,10 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
+
+[node name="WeaponViewModel" type="MeshInstance3D" parent="Icefisher"]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0.436726, 0, -1.08113)
+mesh = ExtResource("5_q8fh2")
 
 [node name="LakeSurface" type="StaticBody3D" parent="."]
 transform = Transform3D(128, 0, 0, 0, 128, 0, 0, 0, 128, 0, 0, 0)
@@ -272,18 +280,39 @@ shader_params/u_colormap_opacity_per_texture = null
 environment = SubResource("Environment_e3ypr")
 
 [node name="Jackshop" parent="." instance=ExtResource("15_r0oxv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.08275, 1.65818, -7.72561)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63.8388, 1.65817, -18.4445)
 
 [node name="TestItemPickup" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.17544, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46.7751, 1.17544, 14.9859)
 collision_mask = 4
 script = ExtResource("14_tx6ee")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="TestItemPickup"]
 mesh = SubResource("BoxMesh_ocjgr")
+surface_material_override/0 = ExtResource("17_1b7vg")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TestItemPickup"]
 shape = SubResource("ConcavePolygonShape3D_brfqu")
+
+[node name="Roca" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -56.2045, 0.0639992, 57.3312)
+mesh = ExtResource("18_hl7vu")
+
+[node name="Tree3" type="MeshInstance3D" parent="."]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -61.831, 0.0640001, 69.1614)
+mesh = ExtResource("19_mynqp")
+
+[node name="Tree4" type="MeshInstance3D" parent="."]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -41.1788, 0.0640001, 56.4111)
+mesh = ExtResource("19_mynqp")
+
+[node name="Tree5" type="MeshInstance3D" parent="."]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -61.831, 0.0640001, 34.3144)
+mesh = ExtResource("19_mynqp")
+
+[node name="Tree6" type="MeshInstance3D" parent="."]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -61.831, 0.0640001, 56.4111)
+mesh = ExtResource("19_mynqp")
 
 [connection signal="body_entered" from="LakeSurface/CSGIce/CSGHole/EnterWaterArea3D" to="LakeSurface/CSGIce/CSGHole/EnterWaterArea3D" method="_on_body_entered"]
 [connection signal="body_exited" from="LakeSurface/CSGIce/CSGHole/EnterWaterArea3D" to="LakeSurface/CSGIce/CSGHole/EnterWaterArea3D" method="_on_body_exited"]
