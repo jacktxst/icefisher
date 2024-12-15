@@ -1,0 +1,58 @@
+[gd_scene load_steps=4 format=3 uid="uid://1ptiph4cakk3"]
+
+[ext_resource type="Script" path="res://scripts/shopkeeper.gd" id="1_lq73f"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_hxrng"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_kjs85"]
+
+[node name="Jackshop" type="Node3D"]
+
+[node name="Shopkeeper" type="StaticBody3D" parent="."]
+collision_layer = 16
+collision_mask = 0
+script = ExtResource("1_lq73f")
+
+[node name="Panel" type="Panel" parent="Shopkeeper"]
+visible = false
+layout_direction = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -461.0
+offset_top = -222.0
+offset_right = 461.0
+offset_bottom = 222.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PlayerInventory" type="VBoxContainer" parent="Shopkeeper/Panel"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -222.0
+offset_right = 400.0
+offset_bottom = 222.0
+grow_vertical = 2
+
+[node name="Trades" type="VBoxContainer" parent="Shopkeeper/Panel"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -400.0
+offset_top = -222.0
+offset_bottom = 222.0
+grow_horizontal = 0
+grow_vertical = 2
+
+[node name="Shopkeeper" type="CollisionShape3D" parent="Shopkeeper"]
+shape = SubResource("CapsuleShape3D_hxrng")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Shopkeeper"]
+mesh = SubResource("CapsuleMesh_kjs85")

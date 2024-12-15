@@ -41,7 +41,13 @@ func _input(event: InputEvent) -> void:
 				$SelectedItemLabel.text = "Selected Item: " +  $"/root/Node3D/Items".items[inventory[index].id].name
 				break
 			index = ( index + 1 ) % len(inventory)
-	
+			
+	if event.is_action_pressed("interact"):
+		var col = $Camera3D/RayCast3D.get_collider()
+		if col and col.name == "Shopkeeper":
+			print("h")
+			col.interact()
+			
 	if event.is_action_pressed("use_item"):
 		$"/root/Node3D/Items".use_item(inventory[selected_item].id)
 	if event.is_action_released("use_item"):

@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://bnm7vcoe3yxbc"]
+[gd_scene load_steps=35 format=3 uid="uid://bnm7vcoe3yxbc"]
 
 [ext_resource type="Script" path="res://scripts/items.gd" id="1_7t2mv"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="2_onobx"]
@@ -15,6 +15,7 @@
 [ext_resource type="Texture2D" uid="uid://dl46lx0kcd5uv" path="res://terrain_textures/stone-1024.jpg" id="12_q3b4j"]
 [ext_resource type="Texture2D" uid="uid://erpgs7eh448m" path="res://terrain_textures/skyfinal_0.png" id="13_s4pnj"]
 [ext_resource type="Script" path="res://scripts/item_pickup.gd" id="14_tx6ee"]
+[ext_resource type="PackedScene" uid="uid://1ptiph4cakk3" path="res://scenes/jackshop.tscn" id="15_r0oxv"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5kjdr"]
 
@@ -93,7 +94,7 @@ script = ExtResource("1_7t2mv")
 [node name="Icefisher" type="CharacterBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.04542, 3.23687, -3.58997)
 collision_layer = 4
-collision_mask = 3
+collision_mask = 19
 script = ExtResource("2_onobx")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Icefisher"]
@@ -101,6 +102,10 @@ shape = SubResource("CapsuleShape3D_5kjdr")
 
 [node name="Camera3D" type="Camera3D" parent="Icefisher"]
 current = true
+
+[node name="RayCast3D" type="RayCast3D" parent="Icefisher/Camera3D"]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
+collision_mask = 16
 
 [node name="SelectedItemLabel" type="Label" parent="Icefisher"]
 offset_left = 1.0
@@ -265,6 +270,9 @@ shader_params/u_colormap_opacity_per_texture = null
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_e3ypr")
+
+[node name="Jackshop" parent="." instance=ExtResource("15_r0oxv")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 6.08275, 1.65818, -7.72561)
 
 [node name="TestItemPickup" type="Area3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.17544, 0)
