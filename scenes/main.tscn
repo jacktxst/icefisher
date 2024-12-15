@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://bnm7vcoe3yxbc"]
+[gd_scene load_steps=40 format=3 uid="uid://bnm7vcoe3yxbc"]
 
 [ext_resource type="Script" path="res://scripts/items.gd" id="1_7t2mv"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="2_onobx"]
@@ -19,12 +19,13 @@
 [ext_resource type="PackedScene" uid="uid://1ptiph4cakk3" path="res://scenes/jackshop.tscn" id="15_r0oxv"]
 [ext_resource type="Material" uid="uid://dds1vc2y7ker8" path="res://materials/bobber.tres" id="17_1b7vg"]
 [ext_resource type="ArrayMesh" uid="uid://brlvpykvxdubs" path="res://models/roca.obj" id="18_hl7vu"]
+[ext_resource type="PackedScene" uid="uid://clciuvifd52er" path="res://scenes/Crappie.tscn" id="18_pg715"]
 [ext_resource type="ArrayMesh" uid="uid://bsjqiw56rbxrs" path="res://models/Tree3.obj" id="19_mynqp"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5kjdr"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ef7ql"]
-size = Vector3(1, 0.001, 1)
+size = Vector3(4, 0.001, 4)
 
 [sub_resource type="Gradient" id="Gradient_1wcdo"]
 offsets = PackedFloat32Array(0, 0.323671, 0.558776, 1)
@@ -180,17 +181,17 @@ transform = Transform3D(128, 0, 0, 0, 128, 0, 0, 0, 128, 0, 0, 0)
 collision_layer = 2
 collision_mask = 0
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="LakeSurface"]
+[node name="IceCollisionShape3D" type="CollisionShape3D" parent="LakeSurface"]
 shape = SubResource("BoxShape3D_ef7ql")
 
 [node name="CSGIce" type="CSGBox3D" parent="LakeSurface"]
 transform = Transform3D(0.0078125, 0, 0, 0, 0.0078125, 0, 0, 0, 0.0078125, -7.33435e-05, 0.000219852, -5.73881e-05)
 flip_faces = true
-size = Vector3(256, 0.1, 256)
+size = Vector3(512, 0.1, 512)
 material = ExtResource("5_shh4w")
 
 [node name="CSGHole" type="CSGBox3D" parent="LakeSurface/CSGIce"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.37, 0, -0.218)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -72.0359, 0, 9.39413)
 operation = 2
 
 [node name="WaterMeshInstance3D" type="MeshInstance3D" parent="LakeSurface/CSGIce/CSGHole"]
@@ -276,8 +277,36 @@ shader_params/u_globalmap_blend_start = null
 shader_params/u_globalmap_blend_distance = null
 shader_params/u_colormap_opacity_per_texture = null
 
+[node name="Roca" type="MeshInstance3D" parent="HTerrain"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -56.2045, 0.0639992, 57.3312)
+mesh = ExtResource("18_hl7vu")
+skeleton = NodePath("../..")
+
+[node name="Tree3" type="MeshInstance3D" parent="HTerrain"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -61.831, 0.0640001, 69.1614)
+mesh = ExtResource("19_mynqp")
+skeleton = NodePath("../..")
+
+[node name="Tree4" type="MeshInstance3D" parent="HTerrain"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -41.1788, 0.0640001, 56.4111)
+mesh = ExtResource("19_mynqp")
+skeleton = NodePath("../..")
+
+[node name="Tree5" type="MeshInstance3D" parent="HTerrain"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -61.831, 0.0640001, 34.3144)
+mesh = ExtResource("19_mynqp")
+skeleton = NodePath("../..")
+
+[node name="Tree6" type="MeshInstance3D" parent="HTerrain"]
+transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -61.831, 0.0640001, 56.4111)
+mesh = ExtResource("19_mynqp")
+skeleton = NodePath("../..")
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_e3ypr")
+
+[node name="crappie" parent="." instance=ExtResource("18_pg715")]
+transform = Transform3D(-1, 8.74228e-08, 0, 8.74228e-08, 1, 8.74228e-08, 7.64274e-15, 8.74228e-08, -1, -70.7941, -1.5105, 10.0298)
 
 [node name="Jackshop" parent="." instance=ExtResource("15_r0oxv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63.8388, 1.65817, -18.4445)
@@ -293,26 +322,6 @@ surface_material_override/0 = ExtResource("17_1b7vg")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TestItemPickup"]
 shape = SubResource("ConcavePolygonShape3D_brfqu")
-
-[node name="Roca" type="MeshInstance3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -56.2045, 0.0639992, 57.3312)
-mesh = ExtResource("18_hl7vu")
-
-[node name="Tree3" type="MeshInstance3D" parent="."]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -61.831, 0.0640001, 69.1614)
-mesh = ExtResource("19_mynqp")
-
-[node name="Tree4" type="MeshInstance3D" parent="."]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -41.1788, 0.0640001, 56.4111)
-mesh = ExtResource("19_mynqp")
-
-[node name="Tree5" type="MeshInstance3D" parent="."]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -61.831, 0.0640001, 34.3144)
-mesh = ExtResource("19_mynqp")
-
-[node name="Tree6" type="MeshInstance3D" parent="."]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -61.831, 0.0640001, 56.4111)
-mesh = ExtResource("19_mynqp")
 
 [connection signal="body_entered" from="LakeSurface/CSGIce/CSGHole/EnterWaterArea3D" to="LakeSurface/CSGIce/CSGHole/EnterWaterArea3D" method="_on_body_entered"]
 [connection signal="body_exited" from="LakeSurface/CSGIce/CSGHole/EnterWaterArea3D" to="LakeSurface/CSGIce/CSGHole/EnterWaterArea3D" method="_on_body_exited"]

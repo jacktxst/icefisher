@@ -11,7 +11,10 @@ func update_gui():
 		child.free()
 	for item_stack in $"..".inventory:
 		var label = Label.new()
-		label.text = "Qt: " + str(item_stack.count) + " Item: " + $"/root/Node3D/Items".items[item_stack.id].name
+		if item_stack.id == -1:
+			label.text = "Empty Slot"
+		else:
+			label.text = "Qt: " + str(item_stack.count) + " Item: " + $"/root/Node3D/Items".items[item_stack.id].name
 		if item_stack.equipped:
 			label.text += " (Equipped)"
 		$VBoxContainer.add_child(label)

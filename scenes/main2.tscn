@@ -6,7 +6,7 @@
 [ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="3_5ltlh"]
 [ext_resource type="Texture2D" uid="uid://v1nk2a8xn84b" path="res://terrain_textures/snow.png" id="4_t5vgp"]
 [ext_resource type="Texture2D" uid="uid://dl46lx0kcd5uv" path="res://terrain_textures/stone-1024.jpg" id="5_88dwp"]
-[ext_resource type="Script" path="res://scripts/player.gd" id="6_blitg"]
+[ext_resource type="Script" path="res://scripts/player3.gd" id="6_blitg"]
 [ext_resource type="Script" path="res://scripts/items.gd" id="7_dy4ad"]
 [ext_resource type="Texture2D" uid="uid://erpgs7eh448m" path="res://terrain_textures/skyfinal_0.png" id="9_0q7in"]
 [ext_resource type="LabelSettings" uid="uid://4gpdmnytqaa0" path="res://LabelSetting.tres" id="9_52lrs"]

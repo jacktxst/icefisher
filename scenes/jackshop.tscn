@@ -51,8 +51,23 @@ offset_bottom = 222.0
 grow_horizontal = 0
 grow_vertical = 2
 
+[node name="Button" type="Button" parent="Shopkeeper/Panel"]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -221.0
+offset_top = -95.0
+grow_horizontal = 0
+grow_vertical = 0
+text = "Exit Trading"
+
 [node name="Shopkeeper" type="CollisionShape3D" parent="Shopkeeper"]
 shape = SubResource("CapsuleShape3D_hxrng")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Shopkeeper"]
 mesh = SubResource("CapsuleMesh_kjs85")
+
+[connection signal="pressed" from="Shopkeeper/Panel/Button" to="Shopkeeper" method="_on_exit_button_pressed"]

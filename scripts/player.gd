@@ -62,9 +62,7 @@ func _input(event: InputEvent) -> void:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 			paused = true
 
-	if event.is_action_pressed("Sprint") and is_instance_valid($"../Shop") and $"../Shop".onScreen() and position.distance_to($"../Shop".currentPos()) < 3:
-		print("open")
-	
+
 func _process(delta: float) -> void:
 	if position.y < 0 and death_fadeout == -100:
 		death_fadeout = 1
@@ -80,15 +78,6 @@ func _process(delta: float) -> void:
 	$DrillEnergyLabel.text = "drill_energy" + str(drill_energy)
 	footstep_timer = footstep_timer - delta if footstep_timer > 0 else footstep_timer
 
-func makenoise():
-	if velocity.length() != 0:
-		var rng = randi_range(1, 42)
-		if(footstep_timer <= 0):
-			#get_node("Footsteps/Step"+rng).pitch_scale = randf_range(.9, 1.1)
-			#get_node("Footsteps/Step"+rng).play()
-			
-			footstep_timer = randf_range(.5, .7)
-	
 func _physics_process(delta: float) -> void:
 	if paused:
 		return
