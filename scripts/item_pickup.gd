@@ -17,3 +17,11 @@ func _on_body_entered(body: Node3D) -> void:
 				$"/root/Node3D/Icefisher/InventoryPanel".update_gui()
 				queue_free()
 				return
+
+var anim : float
+
+func _process(delta : float):
+	anim += delta
+	if is_instance_valid($MeshInstance3D):
+		$MeshInstance3D.position.y = sin(anim) * 0.25
+		$MeshInstance3D.rotate_y(delta * 0.25)

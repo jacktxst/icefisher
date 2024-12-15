@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://bkw5rn03p8voc"]
+
+[ext_resource type="Texture2D" uid="uid://bq6ytvngu241t" path="res://terrain_textures/photoreal_ice_08-512x512.png" id="1_dx87l"]
+
+[resource]
+transparency = 1
+albedo_texture = ExtResource("1_dx87l")
+uv1_scale = Vector3(16, 16, 16)

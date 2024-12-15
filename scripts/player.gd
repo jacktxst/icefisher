@@ -12,7 +12,11 @@ var selected_item : int = 2
 var footstep_timer = 0
 var SPEED  = 5.0
 
+var spawn_pos : Vector3
+var death_fadeout : float = -100
+
 func _ready():
+	spawn_pos = Vector3(position.x,position.y,position.z)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	inventory = [
 		{"count":0,"id":0,"equipped":true},
@@ -55,6 +59,17 @@ func _input(event: InputEvent) -> void:
 		print("open")
 	
 func _process(delta: float) -> void:
+	if position.y < 0 and death_fadeout == -100:
+		death_fadeout = 1
+		$DeathScreen.visible = true
+		$DeathScreen.color = Color(0,0,0,0)
+	if death_fadeout > 0:
+		death_fadeout -= delta
+		$DeathScreen.color = Color(0,0,0,clamp(1-death_fadeout,0,1))
+	if death_fadeout <= 0 and not death_fadeout == -100:
+		$DeathScreen.visible = false
+		position = spawn_pos
+		death_fadeout = -100
 	$DrillEnergyLabel.text = "drill_energy" + str(drill_energy)
 	footstep_timer = footstep_timer - delta if footstep_timer > 0 else footstep_timer
 

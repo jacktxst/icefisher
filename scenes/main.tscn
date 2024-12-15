@@ -1,10 +1,10 @@
-[gd_scene load_steps=35 format=3 uid="uid://bnm7vcoe3yxbc"]
+[gd_scene load_steps=34 format=3 uid="uid://bnm7vcoe3yxbc"]
 
 [ext_resource type="Script" path="res://scripts/items.gd" id="1_7t2mv"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="2_onobx"]
 [ext_resource type="LabelSettings" uid="uid://4gpdmnytqaa0" path="res://LabelSetting.tres" id="3_238ka"]
 [ext_resource type="Script" path="res://scripts/inventory_panel.gd" id="4_urc4l"]
-[ext_resource type="Texture2D" uid="uid://bq6ytvngu241t" path="res://terrain_textures/photoreal_ice_08-512x512.png" id="5_o38kq"]
+[ext_resource type="Material" uid="uid://bkw5rn03p8voc" path="res://materials/ice.tres" id="5_shh4w"]
 [ext_resource type="Shader" path="res://water.gdshader" id="6_o5xlq"]
 [ext_resource type="Script" path="res://scripts/water_surface_triggers.gd" id="7_5y3qv"]
 [ext_resource type="Script" path="res://scripts/ice_hole.gd" id="7_akipc"]
@@ -20,11 +20,6 @@
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_ef7ql"]
 size = Vector3(1, 0.001, 1)
-
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wsrk2"]
-transparency = 1
-albedo_texture = ExtResource("5_o38kq")
-uv1_scale = Vector3(16, 16, 16)
 
 [sub_resource type="Gradient" id="Gradient_1wcdo"]
 offsets = PackedFloat32Array(0, 0.323671, 0.558776, 1)
@@ -158,6 +153,15 @@ max_value = 10.0
 value = 10.0
 show_percentage = false
 
+[node name="DeathScreen" type="ColorRect" parent="Icefisher"]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
 [node name="LakeSurface" type="StaticBody3D" parent="."]
 transform = Transform3D(128, 0, 0, 0, 128, 0, 0, 0, 128, 0, 0, 0)
 collision_layer = 2
@@ -170,7 +174,7 @@ shape = SubResource("BoxShape3D_ef7ql")
 transform = Transform3D(0.0078125, 0, 0, 0, 0.0078125, 0, 0, 0, 0.0078125, -7.33435e-05, 0.000219852, -5.73881e-05)
 flip_faces = true
 size = Vector3(256, 0.1, 256)
-material = SubResource("StandardMaterial3D_wsrk2")
+material = ExtResource("5_shh4w")
 
 [node name="CSGHole" type="CSGBox3D" parent="LakeSurface/CSGIce"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.37, 0, -0.218)
