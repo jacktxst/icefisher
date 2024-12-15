@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://dwkbujihp2n6c"]
+
+[ext_resource type="PackedScene" uid="uid://bs8b18hsccwjc" path="res://models/fishing_line.glb" id="1_bjcir"]
+[ext_resource type="Script" path="res://scripts/rope.gd" id="2_tl37x"]
+[ext_resource type="PackedScene" uid="uid://drxfvkfmfbk0b" path="res://scenes/rope_body.tscn" id="3_3dgrx"]
+
+[node name="fishing_line" instance=ExtResource("1_bjcir")]
+script = ExtResource("2_tl37x")
+skeleton_path = NodePath("Armature/Skeleton3D")
+rope_body = ExtResource("3_3dgrx")
+
+[node name="Skeleton3D" parent="Armature" index="0"]
+transform = Transform3D(1.00218, 0, 0, 0, 1.00218, 0, 0, 0, 1.00218, 0, 0, 0)

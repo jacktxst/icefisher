@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://ci8kto10lp1tk"
+path="res://.godot/imported/FCrappie.obj-19a0ec232e7f62a06f86f46b86cd1f17.mesh"
+
+[deps]
+
+files=["res://.godot/imported/FCrappie.obj-19a0ec232e7f62a06f86f46b86cd1f17.mesh"]
+
+source_file="res://models/Fish people/FCrappie.obj"
+dest_files=["res://.godot/imported/FCrappie.obj-19a0ec232e7f62a06f86f46b86cd1f17.mesh", "res://.godot/imported/FCrappie.obj-19a0ec232e7f62a06f86f46b86cd1f17.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

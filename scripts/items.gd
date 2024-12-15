@@ -27,6 +27,15 @@ func get_id(name):
 func use_item(id : int):
 	if id == 1:
 		use_ice_drill()
+	elif id == 2:
+		use_fishing_rod()
+
+func use_fishing_rod():
+	var projectile = FishHookProjectile.new()
+	projectile.position = $"/root/Node3D/Icefisher".position + $"/root/Node3D/Icefisher/Camera3D".position
+	if is_instance_valid($"/root/Node3D/FishHookProjectile"):
+		$"/root/Node3D/FishHookProjectile".free()
+	$"/root/Node3D".add_child(projectile)
 
 func use_ice_drill():
 	if $"/root/Node3D/Icefisher".drill_energy < 1:

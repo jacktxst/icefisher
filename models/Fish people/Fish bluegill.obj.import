@@ -1,0 +1,22 @@
+[remap]
+
+importer="wavefront_obj"
+importer_version=1
+type="Mesh"
+uid="uid://tjjv83odne41"
+path="res://.godot/imported/Fish bluegill.obj-7c4ea33d363dca4cef50e5f1c9d16236.mesh"
+
+[deps]
+
+files=["res://.godot/imported/Fish bluegill.obj-7c4ea33d363dca4cef50e5f1c9d16236.mesh"]
+
+source_file="res://models/Fish people/Fish bluegill.obj"
+dest_files=["res://.godot/imported/Fish bluegill.obj-7c4ea33d363dca4cef50e5f1c9d16236.mesh", "res://.godot/imported/Fish bluegill.obj-7c4ea33d363dca4cef50e5f1c9d16236.mesh"]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3(1, 1, 1)
+offset_mesh=Vector3(0, 0, 0)
+optimize_mesh=true
+force_disable_mesh_compression=false

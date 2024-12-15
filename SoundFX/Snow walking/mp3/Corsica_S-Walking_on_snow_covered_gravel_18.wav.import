@@ -1,0 +1,24 @@
+[remap]
+
+importer="wav"
+type="AudioStreamWAV"
+uid="uid://8xeralr7e2vb"
+path="res://.godot/imported/Corsica_S-Walking_on_snow_covered_gravel_18.wav-a9a66ae5169bec6a13293a73043a09fd.sample"
+
+[deps]
+
+source_file="res://SoundFX/Snow walking/mp3/Corsica_S-Walking_on_snow_covered_gravel_18.wav"
+dest_files=["res://.godot/imported/Corsica_S-Walking_on_snow_covered_gravel_18.wav-a9a66ae5169bec6a13293a73043a09fd.sample"]
+
+[params]
+
+force/8_bit=false
+force/mono=false
+force/max_rate=false
+force/max_rate_hz=44100
+edit/trim=false
+edit/normalize=false
+edit/loop_mode=0
+edit/loop_begin=0
+edit/loop_end=-1
+compress/mode=0
