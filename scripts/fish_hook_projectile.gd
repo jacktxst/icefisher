@@ -4,7 +4,7 @@ class_name FishHookProjectile
 
 var collision_shape = CollisionShape3D.new()
 var mesh = MeshInstance3D.new()
-
+var power : float
 
 func _ready():
 	mesh.mesh = BoxMesh.new() 
@@ -18,4 +18,4 @@ func _ready():
 	add_child(mesh)
 	var dir = -$"/root/Node3D/Icefisher".transform.basis.z
 	dir.y = -$"/root/Node3D/Icefisher/Camera3D".transform.basis.z.y
-	apply_impulse(dir * 10, Vector3(0,0,0))
+	apply_impulse(dir * power, Vector3(0,0,0))

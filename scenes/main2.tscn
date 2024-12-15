@@ -1,0 +1,161 @@
+[gd_scene load_steps=25 format=3 uid="uid://bnm7vcoe3yxbc"]
+
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="1_4lorg"]
+[ext_resource type="Texture2D" uid="uid://bq6ytvngu241t" path="res://terrain_textures/photoreal_ice_08-512x512.png" id="1_mr6mo"]
+[ext_resource type="Resource" path="res://terraindata/data.hterrain" id="2_t6m2x"]
+[ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain_texture_set.gd" id="3_5ltlh"]
+[ext_resource type="Texture2D" uid="uid://v1nk2a8xn84b" path="res://terrain_textures/snow.png" id="4_t5vgp"]
+[ext_resource type="Texture2D" uid="uid://dl46lx0kcd5uv" path="res://terrain_textures/stone-1024.jpg" id="5_88dwp"]
+[ext_resource type="Script" path="res://scripts/player.gd" id="6_blitg"]
+[ext_resource type="Script" path="res://scripts/items.gd" id="7_dy4ad"]
+[ext_resource type="Texture2D" uid="uid://erpgs7eh448m" path="res://terrain_textures/skyfinal_0.png" id="9_0q7in"]
+[ext_resource type="LabelSettings" uid="uid://4gpdmnytqaa0" path="res://LabelSetting.tres" id="9_52lrs"]
+[ext_resource type="Script" path="res://scripts/inventory_panel.gd" id="10_kxyy1"]
+[ext_resource type="Script" path="res://scripts/item_pickup.gd" id="11_jeuwx"]
+[ext_resource type="PackedScene" uid="uid://76ul52ghc4f8" path="res://scenes/pike_navigation.tscn" id="13_4x1mu"]
+[ext_resource type="PackedScene" uid="uid://b2f5siq6ocxuc" path="res://scenes/CrappieNavigation.tscn" id="13_jkjpq"]
+[ext_resource type="PackedScene" uid="uid://ci8w21gyb5m7d" path="res://scenes/BluegillNavigation.tscn" id="14_3cif3"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_m2lyw"]
+data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wsrk2"]
+transparency = 1
+albedo_texture = ExtResource("1_mr6mo")
+uv1_scale = Vector3(16, 16, 16)
+
+[sub_resource type="Resource" id="Resource_mbty6"]
+script = ExtResource("3_5ltlh")
+mode = 0
+textures = [[ExtResource("4_t5vgp"), ExtResource("5_88dwp")], [null, null]]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5kjdr"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_mxbxr"]
+panorama = ExtResource("9_0q7in")
+filter = false
+
+[sub_resource type="Sky" id="Sky_q2qbv"]
+sky_material = SubResource("PanoramaSkyMaterial_mxbxr")
+
+[sub_resource type="Environment" id="Environment_e3ypr"]
+background_mode = 2
+sky = SubResource("Sky_q2qbv")
+ambient_light_source = 3
+reflected_light_source = 1
+fog_light_color = Color(1, 1, 1, 1)
+fog_light_energy = 0.1
+fog_density = 0.1
+fog_height = -1024.0
+fog_height_density = 3.5294
+fog_depth_curve = 4.59479
+volumetric_fog_density = 0.3294
+
+[sub_resource type="BoxMesh" id="BoxMesh_ocjgr"]
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_brfqu"]
+data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
+
+[node name="Node3D" type="Node3D"]
+
+[node name="LakeSurface" type="StaticBody3D" parent="."]
+transform = Transform3D(128, 0, 0, 0, 128, 0, 0, 0, 128, 0, 0, 0)
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LakeSurface"]
+shape = SubResource("ConcavePolygonShape3D_m2lyw")
+
+[node name="CSGIce" type="CSGBox3D" parent="LakeSurface"]
+transform = Transform3D(0.0078125, 0, 0, 0, 0.0078125, 0, 0, 0, 0.0078125, -7.33435e-05, 0.000219852, -5.73881e-05)
+flip_faces = true
+size = Vector3(256, 0.1, 256)
+material = SubResource("StandardMaterial3D_wsrk2")
+
+[node name="CSGHole" type="CSGBox3D" parent="LakeSurface/CSGIce"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.99208, -0.184364, 5.89849)
+operation = 2
+
+[node name="HTerrain" type="Node3D" parent="."]
+script = ExtResource("1_4lorg")
+centered = true
+_terrain_data = ExtResource("2_t6m2x")
+chunk_size = 32
+collision_enabled = true
+collision_layer = 1
+collision_mask = 1
+shader_type = "Classic4"
+custom_shader = null
+custom_globalmap_shader = null
+texture_set = SubResource("Resource_mbty6")
+render_layers = 1
+cast_shadow = 0
+shader_params/u_ground_uv_scale_per_texture = null
+shader_params/u_depth_blending = true
+shader_params/u_triplanar = null
+shader_params/u_tile_reduction = null
+shader_params/u_globalmap_blend_start = null
+shader_params/u_globalmap_blend_distance = null
+shader_params/u_colormap_opacity_per_texture = null
+
+[node name="Items" type="Node" parent="."]
+script = ExtResource("7_dy4ad")
+
+[node name="Icefisher" type="CharacterBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.04542, 3.23687, -3.58997)
+script = ExtResource("6_blitg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Icefisher"]
+shape = SubResource("CapsuleShape3D_5kjdr")
+
+[node name="Camera3D" type="Camera3D" parent="Icefisher"]
+current = true
+
+[node name="DrillEnergyLabel" type="Label" parent="Icefisher"]
+offset_right = 40.0
+offset_bottom = 23.0
+label_settings = ExtResource("9_52lrs")
+
+[node name="InventoryPanel" type="Panel" parent="Icefisher"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -457.0
+offset_top = -255.5
+offset_right = 457.0
+offset_bottom = 255.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("10_kxyy1")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Icefisher/InventoryPanel"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_e3ypr")
+
+[node name="Area3D" type="Area3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.17544, 0)
+script = ExtResource("11_jeuwx")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Area3D"]
+mesh = SubResource("BoxMesh_ocjgr")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("ConcavePolygonShape3D_brfqu")
+
+[node name="PikeNavigationRegion3D" parent="." instance=ExtResource("13_4x1mu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 40, -10, -20)
+
+[node name="CrappieNavigation" parent="." instance=ExtResource("13_jkjpq")]
+
+[node name="blueGill navigation" parent="." instance=ExtResource("14_3cif3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -50, -5, 10)
+
+[connection signal="body_entered" from="Area3D" to="Area3D" method="_on_body_entered"]

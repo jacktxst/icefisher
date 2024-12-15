@@ -1,4 +1,4 @@
-[gd_scene load_steps=32 format=3 uid="uid://bnm7vcoe3yxbc"]
+[gd_scene load_steps=35 format=3 uid="uid://bnm7vcoe3yxbc"]
 
 [ext_resource type="Script" path="res://scripts/items.gd" id="1_7t2mv"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="2_onobx"]
@@ -6,6 +6,7 @@
 [ext_resource type="Script" path="res://scripts/inventory_panel.gd" id="4_urc4l"]
 [ext_resource type="Texture2D" uid="uid://bq6ytvngu241t" path="res://terrain_textures/photoreal_ice_08-512x512.png" id="5_o38kq"]
 [ext_resource type="Shader" path="res://water.gdshader" id="6_o5xlq"]
+[ext_resource type="Script" path="res://scripts/water_surface_triggers.gd" id="7_5y3qv"]
 [ext_resource type="Script" path="res://scripts/ice_hole.gd" id="7_akipc"]
 [ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="8_bj8mh"]
 [ext_resource type="Resource" path="res://terraindata/data.hterrain" id="9_s8lhx"]
@@ -17,8 +18,8 @@
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5kjdr"]
 
-[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_m2lyw"]
-data = PackedVector3Array(1, 0, 1, -1, 0, 1, 1, 0, -1, -1, 0, 1, -1, 0, -1, 1, 0, -1)
+[sub_resource type="BoxShape3D" id="BoxShape3D_ef7ql"]
+size = Vector3(1, 0.001, 1)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wsrk2"]
 transparency = 1
@@ -49,6 +50,12 @@ size = Vector2(1, 1)
 subdivide_width = 4
 subdivide_depth = 4
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_tugf5"]
+size = Vector3(2, 1, 2)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_n53uv"]
+size = Vector3(2, 1, 2)
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_yhyqd"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_2s74q"]
@@ -74,11 +81,7 @@ background_mode = 2
 sky = SubResource("Sky_q2qbv")
 ambient_light_source = 3
 reflected_light_source = 1
-fog_light_color = Color(1, 1, 1, 1)
-fog_light_energy = 0.1
-fog_density = 0.1
-fog_height = -1024.0
-fog_height_density = 3.5294
+fog_enabled = true
 fog_depth_curve = 4.59479
 volumetric_fog_density = 0.3294
 
@@ -138,13 +141,30 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="QuickTimeProgressBar" type="ProgressBar" parent="Icefisher"]
+visible = false
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -40.0
+offset_top = -13.5
+offset_right = 40.0
+offset_bottom = 13.5
+grow_horizontal = 2
+grow_vertical = 2
+max_value = 10.0
+value = 10.0
+show_percentage = false
+
 [node name="LakeSurface" type="StaticBody3D" parent="."]
 transform = Transform3D(128, 0, 0, 0, 128, 0, 0, 0, 128, 0, 0, 0)
 collision_layer = 2
 collision_mask = 0
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="LakeSurface"]
-shape = SubResource("ConcavePolygonShape3D_m2lyw")
+shape = SubResource("BoxShape3D_ef7ql")
 
 [node name="CSGIce" type="CSGBox3D" parent="LakeSurface"]
 transform = Transform3D(0.0078125, 0, 0, 0, 0.0078125, 0, 0, 0, 0.0078125, -7.33435e-05, 0.000219852, -5.73881e-05)
@@ -156,16 +176,37 @@ material = SubResource("StandardMaterial3D_wsrk2")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 11.37, 0, -0.218)
 operation = 2
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="LakeSurface/CSGIce/CSGHole"]
+[node name="WaterMeshInstance3D" type="MeshInstance3D" parent="LakeSurface/CSGIce/CSGHole"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.0231227, 0)
 mesh = SubResource("PlaneMesh_28hah")
 
-[node name="Area3D" type="Area3D" parent="LakeSurface/CSGIce/CSGHole"]
+[node name="EnterWaterArea3D" type="Area3D" parent="LakeSurface/CSGIce/CSGHole"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+collision_mask = 15
+gravity_point_center = Vector3(0, 0.5, 0)
+gravity_direction = Vector3(0, 0.5, 0)
+script = ExtResource("7_5y3qv")
+water = true
+paired = NodePath("../EnterAirArea3D")
+
+[node name="EnterWaterCollisionShape3D" type="CollisionShape3D" parent="LakeSurface/CSGIce/CSGHole/EnterWaterArea3D"]
+shape = SubResource("BoxShape3D_tugf5")
+
+[node name="EnterAirArea3D" type="Area3D" parent="LakeSurface/CSGIce/CSGHole"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+collision_mask = 15
+script = ExtResource("7_5y3qv")
+paired = NodePath("../EnterWaterArea3D")
+
+[node name="EnterAirCollisionShape3D" type="CollisionShape3D" parent="LakeSurface/CSGIce/CSGHole/EnterAirArea3D"]
+shape = SubResource("BoxShape3D_n53uv")
+
+[node name="DisableIceCollisionArea3D" type="Area3D" parent="LakeSurface/CSGIce/CSGHole"]
 collision_layer = 0
 collision_mask = 15
 script = ExtResource("7_akipc")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="LakeSurface/CSGIce/CSGHole/Area3D"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="LakeSurface/CSGIce/CSGHole/DisableIceCollisionArea3D"]
 shape = SubResource("BoxShape3D_yhyqd")
 
 [node name="StaticBody3D" type="StaticBody3D" parent="LakeSurface/CSGIce/CSGHole"]
@@ -232,6 +273,9 @@ mesh = SubResource("BoxMesh_ocjgr")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="TestItemPickup"]
 shape = SubResource("ConcavePolygonShape3D_brfqu")
 
-[connection signal="body_entered" from="LakeSurface/CSGIce/CSGHole/Area3D" to="LakeSurface/CSGIce/CSGHole/Area3D" method="_on_body_entered"]
-[connection signal="body_exited" from="LakeSurface/CSGIce/CSGHole/Area3D" to="LakeSurface/CSGIce/CSGHole/Area3D" method="_on_body_exited"]
+[connection signal="body_entered" from="LakeSurface/CSGIce/CSGHole/EnterWaterArea3D" to="LakeSurface/CSGIce/CSGHole/EnterWaterArea3D" method="_on_body_entered"]
+[connection signal="body_exited" from="LakeSurface/CSGIce/CSGHole/EnterWaterArea3D" to="LakeSurface/CSGIce/CSGHole/EnterWaterArea3D" method="_on_body_exited"]
+[connection signal="body_entered" from="LakeSurface/CSGIce/CSGHole/EnterAirArea3D" to="LakeSurface/CSGIce/CSGHole/EnterAirArea3D" method="_on_body_entered"]
+[connection signal="body_entered" from="LakeSurface/CSGIce/CSGHole/DisableIceCollisionArea3D" to="LakeSurface/CSGIce/CSGHole/DisableIceCollisionArea3D" method="_on_body_entered"]
+[connection signal="body_exited" from="LakeSurface/CSGIce/CSGHole/DisableIceCollisionArea3D" to="LakeSurface/CSGIce/CSGHole/DisableIceCollisionArea3D" method="_on_body_exited"]
 [connection signal="body_entered" from="TestItemPickup" to="TestItemPickup" method="_on_body_entered"]

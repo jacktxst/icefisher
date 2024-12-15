@@ -19,28 +19,61 @@ var items = [
 		"name":"Bobber",}
 ]
 
+var line_is_cast : bool = false
+
 func get_id(name):
 	for index in range(len(items)):
 		if items[index].name == name:
 			return index
-			
+
+# This code is really bad I know
+
 func use_item(id : int):
 	if id == 1:
 		use_ice_drill()
 	elif id == 2:
 		use_fishing_rod()
 
+func release_item(id : int):
+	if id == 2:
+		release_fishing_rod()
+
+func release_fishing_rod():
+	if line_is_cast:
+		var projectile = FishHookProjectile.new()
+		var power = $"/root/Node3D/Icefisher/QuickTimeProgressBar".value
+		# negative absolute value function transformed
+		power = (-1.7 * abs(power-5) )+10
+		projectile.power = power
+		print("throw!" + str(projectile.power))
+		projectile.position = $"/root/Node3D/Icefisher".position + $"/root/Node3D/Icefisher/Camera3D".position
+		if is_instance_valid($"/root/Node3D/FishHookProjectile"):
+			$"/root/Node3D/FishHookProjectile".free()
+		$"/root/Node3D".add_child(projectile)
+		$"/root/Node3D/Icefisher/QuickTimeProgressBar".visible = false
+
+func _process(delta : float):
+	if line_is_cast:
+		$"/root/Node3D/Icefisher/QuickTimeProgressBar".value += delta * 4
+		if $"/root/Node3D/Icefisher/QuickTimeProgressBar".value >= $"/root/Node3D/Icefisher/QuickTimeProgressBar".max_value:
+			line_is_cast = false
+			$"/root/Node3D/Icefisher/QuickTimeProgressBar".visible = false
+
 func use_fishing_rod():
-	var projectile = FishHookProjectile.new()
-	projectile.position = $"/root/Node3D/Icefisher".position + $"/root/Node3D/Icefisher/Camera3D".position
-	if is_instance_valid($"/root/Node3D/FishHookProjectile"):
-		$"/root/Node3D/FishHookProjectile".free()
-	$"/root/Node3D".add_child(projectile)
+	if !line_is_cast:
+		# Show the timewheel
+		$"/root/Node3D/Icefisher/QuickTimeProgressBar".visible = true
+		$"/root/Node3D/Icefisher/QuickTimeProgressBar".value = $"/root/Node3D/Icefisher/QuickTimeProgressBar".min_value
+		line_is_cast = true
+	else:
+		# Reel
+		if is_instance_valid($"/root/Node3D/FishHookProjectile"):
+			$"/root/Node3D/FishHookProjectile".free()
+		line_is_cast = false
 
 func use_ice_drill():
 	if $"/root/Node3D/Icefisher".drill_energy < 1:
 		return
-	
 	$"/root/Node3D/Icefisher".drill_energy -= 1
 	$"/root/Node3D/LakeSurface/CSGIce/CSGHole".position.x = $"/root/Node3D/Icefisher".position.x
 	$"/root/Node3D/LakeSurface/CSGIce/CSGHole".position.z = $"/root/Node3D/Icefisher".position.z

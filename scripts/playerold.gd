@@ -1,16 +1,18 @@
 extends CharacterBody3D
 
+
+const SPEED = 5.0
 const JUMP_VELOCITY = 4.5
 const LOOK_SENSITIVITY = 0.001
+
 var paused = false
+
 # 
 var rod_level = 1
 var drill_level = 1
 var drill_energy = 100
 var inventory = []
 var selected_item : int = 2
-var footstep_timer = 0
-var SPEED  = 5.0
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -22,6 +24,7 @@ func _ready():
 	]
 	$InventoryPanel.update_gui()
 	$SelectedItemLabel.text = "Selected Item: " +  $"/root/Node3D/Items".items[inventory[selected_item].id].name
+
 
 func _input(event: InputEvent) -> void:
 	if not paused and event is InputEventMouseMotion:
@@ -42,7 +45,6 @@ func _input(event: InputEvent) -> void:
 		$"/root/Node3D/Items".use_item(inventory[selected_item].id)
 	if event.is_action_released("use_item"):
 		$"/root/Node3D/Items".release_item(inventory[selected_item].id)
-	
 	if event.is_action_pressed("game_pause"):
 		if paused:
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -50,23 +52,10 @@ func _input(event: InputEvent) -> void:
 		else:
 			Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 			paused = true
-
-	if event.is_action_pressed("Sprint") and $"../Shop".onScreen() and position.distance_to($"../Shop".currentPos()) < 3:
-		print("open")
-	
+				
 func _process(delta: float) -> void:
 	$DrillEnergyLabel.text = "drill_energy" + str(drill_energy)
-	footstep_timer = footstep_timer - delta if footstep_timer > 0 else footstep_timer
 
-func makenoise():
-	if velocity.length() != 0:
-		var rng = randi_range(1, 42)
-		if(footstep_timer <= 0):
-			#get_node("Footsteps/Step"+rng).pitch_scale = randf_range(.9, 1.1)
-			#get_node("Footsteps/Step"+rng).play()
-			
-			footstep_timer = randf_range(.5, .7)
-	
 func _physics_process(delta: float) -> void:
 	if paused:
 		return
@@ -82,26 +71,6 @@ func _physics_process(delta: float) -> void:
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
-	
-	if Input.is_action_pressed("Sprint") and (Input.is_action_pressed("Crouch")==false):
-		SPEED = 7.0
-	if Input.is_action_just_released("Sprint"):
-		SPEED = 5.0
-	if Input.is_action_just_pressed("Crouch"):
-		SPEED = 3.0
-		$Camera3D.translate(Vector3(0, -.5, 0))
-	if Input.is_action_just_released("Crouch"):
-		SPEED = 5.0
-		$Camera3D.translate(Vector3(0, .5, 0))
-
-	if velocity.length() != 0 and is_on_floor():
-		var rng = randi_range(1, 42)
-		if(footstep_timer <= 0):
-			#get_node("Footsteps/Step"+str(rng)).pitch_scale = randf_range(.9, 1.1)
-			#get_node("Footsteps/Step"+str(rng)).play()
-			
-			footstep_timer = randf_range(1-(SPEED/10), 1-(SPEED/10)+.1)
-		
 	if direction:
 		velocity.x = direction.x * SPEED
 		velocity.z = direction.z * SPEED
