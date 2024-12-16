@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://clciuvifd52er"]
 
 [ext_resource type="ArrayMesh" uid="uid://ci8kto10lp1tk" path="res://models/Fish people/FCrappie.obj" id="1_ynimv"]
-[ext_resource type="Script" path="res://scripts/FishNav.gd" id="2_a0354"]
+[ext_resource type="Script" path="res://scripts/fish.gd" id="2_a0354"]
 
 [node name="crappie" type="MeshInstance3D"]
 transform = Transform3D(-1, 8.74228e-08, 0, 8.74228e-08, 1, 8.74228e-08, 7.64274e-15, 8.74228e-08, -1, 0, 0, 0)

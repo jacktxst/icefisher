@@ -1,5 +1,7 @@
 extends CharacterBody3D
 
+class_name Icefisher
+
 const JUMP_VELOCITY = 4.5
 const LOOK_SENSITIVITY = 0.001
 var paused = false
@@ -19,13 +21,85 @@ func _ready():
 	spawn_pos = Vector3(position.x,position.y,position.z)
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	inventory = [
-		{"count":0,"id":0,"equipped":true},
+		{"count":0,"id":-1,"equipped":false},
+		{"count":0,"id":-1,"equipped":false},
+		{"count":0,"id":-1,"equipped":false},
+		{"count":0,"id":-1,"equipped":false},
+		{"count":0,"id":-1,"equipped":false},
+		{"count":0,"id":-1,"equipped":false},
+		{"count":0,"id":-1,"equipped":false},
 		{"count":1,"equipped":true,"id":$"../Items".get_id("Bobber")},
 		{"count":1,"equipped":true,"id":$"../Items".get_id("Ice Drill")},
 		{"count":1,"equipped":true,"id":$"../Items".get_id("Fishing Rod")}
 	]
 	$InventoryPanel.update_gui()
 	$SelectedItemLabel.text = "Selected Item: " +  $"/root/Node3D/Items".items[inventory[selected_item].id].name
+
+func has_at_least(count : int, item_id: int) -> bool:
+	var remaining = count
+	for item_stack in self.inventory:
+		if item_stack.id == item_id:
+			remaining -= item_stack.count
+			if remaining <= 0:
+				return true
+	return false
+	
+
+func has_room_for(item_id : int, count : int) -> bool:
+	var items = $/root/Node3D/Items.items
+	var remaining = count
+	for item_stack in self.inventory:
+		if item_stack.id == -1:
+			remaining -= items[item_id].max_count
+			if remaining <= 0:
+				return true
+		elif item_stack.id == item_id:
+			remaining -= items[item_id].max_count - item_stack.count
+			if remaining <= 0:
+				return true
+	return false
+
+func remove_items(count : int, item_id : int):
+	var remaining = count
+	for item_stack in self.inventory:
+		if item_stack.id == item_id:
+			if item_stack.count > remaining:
+				item_stack.count -= remaining
+				return
+			else:
+				remaining -= item_stack.count
+				item_stack.count = 0
+				item_stack.item_id = -1
+				if remaining <= 0:
+					return
+
+func give_item(item_id : int, count : int) -> int:
+	if count <= 0:
+		return -1
+	var items = $/root/Node3D/Items.items
+	var remaining = count
+	for item_stack in self.inventory:
+		if item_stack.id == -1:
+			var slot_room = items[item_id].max_count
+			if remaining <= slot_room:
+				item_stack.count = remaining
+				item_stack.id = item_id
+				$InventoryPanel.update_gui()
+				return 0
+			else:
+				remaining -= slot_room
+				item_stack.count = slot_room
+		elif item_stack.id == item_id:
+			var slot_room = items[item_id].max_count - item_stack.count
+			if remaining <= slot_room:
+				item_stack.count += remaining
+				$InventoryPanel.update_gui()
+				return 0
+			else:
+				remaining -= slot_room
+				item_stack.count += slot_room
+	return remaining
+	$InventoryPanel.update_gui()
 
 func _input(event: InputEvent) -> void:
 	if not paused and event is InputEventMouseMotion:
@@ -93,6 +167,9 @@ func _physics_process(delta: float) -> void:
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir := Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+	
+	if Input.is_key_pressed(KEY_P):
+		print(position)
 	
 	if Input.is_action_pressed("Sprint") and (Input.is_action_pressed("Crouch")==false):
 		SPEED = 7.0

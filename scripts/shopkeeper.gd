@@ -4,19 +4,25 @@ class_name npc
 
 # NOTE: for items with a max count of 1, do not make trades for more than 1 at a time please, it will not work
 
-const trade_sets = [
-	[
-	{"cost":{"count":1,"id":0},"reward":{"count":1,"id":2}},
-	{"cost":{"count":1,"id":1},"reward":{"count":4,"id":1}},
-	{"cost":{"count":1,"id":2},"reward":{"count":2,"id":2}},
-	]
-	
-	
-]
+var trade_sets
 
 # This value is the index (from 0) of the trade set 
 # which an individual npc will use
 @export var npc_id : int
+
+func _ready():
+	var items = $/root/Node3D/Items
+	var money = items.get_id("Money")
+	var fish = items.get_id("Fish")
+	trade_sets = [
+		[
+		{"cost":{"count":1,"id":money},"reward":{"count":1,"id":fish}},
+		{"cost":{"count":1,"id":fish},"reward":{"count":1,"id":money}},
+		{"cost":{"count":1,"id":money},"reward":{"count":2,"id":money}},
+		]
+		
+		
+	]
 
 func update_gui():
 	for child in $Panel/PlayerInventory.get_children():
@@ -44,17 +50,12 @@ func _on_trade_button_pressed(button_index):
 	var cost = trade_sets[npc_id][button_index].cost
 	var reward = trade_sets[npc_id][button_index].reward
 	# Find stack which can provide the cost
-	for cost_stack in $"/root/Node3D/Icefisher".inventory:
-		if cost_stack.id == cost.id and cost_stack.count >= cost.count:
-			# Find stack which can accept the reward
-			for reward_stack in $"/root/Node3D/Icefisher".inventory:
-				if reward_stack.id == -1 or (reward_stack.id == reward.id and reward_stack.count + reward.count <= $/root/Node3D/Items.items[reward.id].max_count):
-					# Perform transaction
-					cost_stack.count -= cost.count
-					if cost_stack.count == 0:
-						cost_stack.id = -1
-					reward_stack.id = reward.id
-					reward_stack.count += reward.count
+	var icefisher : Icefisher = $/root/Node3D/Icefisher
+	
+	if icefisher.has_at_least(cost.count,cost.id) and icefisher.has_room_for(reward.id,reward.count):
+		icefisher.remove_items(cost.count,cost.id)
+		icefisher.give_item(reward.id,reward.count)
+		pass
 	update_gui()
 
 func interact():

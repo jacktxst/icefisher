@@ -1,4 +1,4 @@
-[gd_scene load_steps=40 format=3 uid="uid://bnm7vcoe3yxbc"]
+[gd_scene load_steps=41 format=3 uid="uid://bnm7vcoe3yxbc"]
 
 [ext_resource type="Script" path="res://scripts/items.gd" id="1_7t2mv"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="2_onobx"]
@@ -18,6 +18,7 @@
 [ext_resource type="Script" path="res://scripts/item_pickup.gd" id="14_tx6ee"]
 [ext_resource type="PackedScene" uid="uid://1ptiph4cakk3" path="res://scenes/jackshop.tscn" id="15_r0oxv"]
 [ext_resource type="Material" uid="uid://dds1vc2y7ker8" path="res://materials/bobber.tres" id="17_1b7vg"]
+[ext_resource type="Script" path="res://scripts/fish_spawner.gd" id="17_cl6lf"]
 [ext_resource type="ArrayMesh" uid="uid://brlvpykvxdubs" path="res://models/roca.obj" id="18_hl7vu"]
 [ext_resource type="PackedScene" uid="uid://clciuvifd52er" path="res://scenes/Crappie.tscn" id="18_pg715"]
 [ext_resource type="ArrayMesh" uid="uid://bsjqiw56rbxrs" path="res://models/Tree3.obj" id="19_mynqp"]
@@ -302,11 +303,21 @@ transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -61.831, 0.0640001, 56.4111)
 mesh = ExtResource("19_mynqp")
 skeleton = NodePath("../..")
 
+[node name="CrappieSpawner" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -75.1634, 0, 17.2881)
+script = ExtResource("17_cl6lf")
+minimum_wait = 1.0
+maximum_wait = 4.0
+far_distance = 5.0
+near_distance = 1.0
+population_cap = 1
+
+[node name="crappie" parent="CrappieSpawner" instance=ExtResource("18_pg715")]
+skeleton = NodePath("../..")
+item_id = 2
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_e3ypr")
-
-[node name="crappie" parent="." instance=ExtResource("18_pg715")]
-transform = Transform3D(-1, 8.74228e-08, 0, 8.74228e-08, 1, 8.74228e-08, 7.64274e-15, 8.74228e-08, -1, -70.7941, -1.5105, 10.0298)
 
 [node name="Jackshop" parent="." instance=ExtResource("15_r0oxv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63.8388, 1.65817, -18.4445)
