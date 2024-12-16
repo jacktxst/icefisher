@@ -48,7 +48,7 @@ func _physics_process(delta: float) -> void:
 			return
 			
 	# Hook-Biting
-	if is_instance_valid($/root/Node3D/FishHookProjectile) and position.distance_to($/root/Node3D/FishHookProjectile.position) <= 0.5:
+	if $/root/Node3D/Items.line_is_cast and position.distance_to($/root/Node3D/FishHookProjectile.position) <= 0.5:
 		var rng = randi_range(0,10) # This can be influenced by personality
 		if rng == 0 and $/root/Node3D/FishHookProjectile.get_child_count() == 2:
 			print("yum")
@@ -65,7 +65,7 @@ func _physics_process(delta: float) -> void:
 		look_at(goTo)
 		self.rotate_object_local(Vector3(0,1,0), 3.14)
 		position += velocity
-	elif is_instance_valid($/root/Node3D/FishHookProjectile) and $/root/Node3D/FishHookProjectile.gravity_scale < 0:
+	elif $/root/Node3D/Items.line_is_cast and $/root/Node3D/FishHookProjectile.gravity_scale < 0:
 		print("saw bobber")
 		goTo = $/root/Node3D/FishHookProjectile.position
 	else:
