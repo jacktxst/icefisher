@@ -66,12 +66,12 @@ func remove_items(count : int, item_id : int):
 			if item_stack.count > remaining:
 				item_stack.count -= remaining
 				if item_stack.count == 0:
-					item_stack.item_id = -1
+					item_stack.id = -1
 				return
 			else:
 				remaining -= item_stack.count
 				item_stack.count = 0
-				item_stack.item_id = -1
+				item_stack.id = -1
 				if remaining <= 0:
 					return
 
