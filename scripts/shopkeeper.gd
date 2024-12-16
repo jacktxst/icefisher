@@ -6,6 +6,22 @@ class_name npc
 
 var trade_sets
 
+var hint_no = 0
+
+var hints = [
+	"Buy somethin will ya!",
+	"press v for noclip if you get stuck",
+	"power just makes you cast further. try doing fun trickshots",
+	"if you catch red fish you basically beat the game",
+	"I hear red fish only like rare bait",
+	"You only have to have the rare bait in your inventory for it to work!",
+	"Legend tells of a rare item found on top of mountains",
+	"Don't fall under the ice!",
+	"Dont fall into the nearby canyon!",
+	"I hear there's exotic fish somewhere around here",
+	"You can find a lot of stuff just walking around in these hills"
+]
+
 # This value is the index (from 0) of the trade set 
 # which an individual npc will use
 @export var npc_id : int
@@ -13,7 +29,8 @@ var trade_sets
 func _ready():
 	var items = $/root/Node3D/Items
 	var money = items.get_id("Money")
-	var fish = items.get_id("Fish")
+	var fish = items.get_id("Fish 1")
+	$Panel.visible = false
 	trade_sets = [
 		[
 		{"cost":{"count":1,"id":money},"reward":{"count":1,"id":fish}},
@@ -58,7 +75,17 @@ func _on_trade_button_pressed(button_index):
 		pass
 	update_gui()
 
+var anim_timer : float = 0
+
+func _physics_process(delta : float):
+	anim_timer += delta
+	$Duck.scale.y = 0.25 + 0.005 * sin(anim_timer) 
+
 func interact():
+	hint_no = ( hint_no + 1 ) % len(hints)
+	if hint_no == 0:
+		hints.shuffle()
+	$Panel/Panel/Label.text = hints[hint_no]
 	$Panel.visible = true
 	update_gui()
 	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE

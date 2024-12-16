@@ -1,0 +1,13 @@
+[gd_scene load_steps=4 format=3 uid="uid://bmflw4h6h6ufw"]
+
+[ext_resource type="ArrayMesh" uid="uid://co0mls5uxmyeg" path="res://models/Fish people/FNPike.obj" id="1_wk1v1"]
+[ext_resource type="Material" uid="uid://5jfk8rrexnmv" path="res://materials/fish3.tres" id="2_hvwnb"]
+[ext_resource type="Script" path="res://scripts/fish.gd" id="3_b51ny"]
+
+[node name="Fish3" type="MeshInstance3D"]
+transform = Transform3D(-1, 8.74228e-08, 0, 8.74228e-08, 1, 8.74228e-08, 7.64274e-15, 8.74228e-08, -1, 0, 0, 0)
+mesh = ExtResource("1_wk1v1")
+surface_material_override/0 = ExtResource("2_hvwnb")
+surface_material_override/1 = ExtResource("2_hvwnb")
+script = ExtResource("3_b51ny")
+item_id = 9

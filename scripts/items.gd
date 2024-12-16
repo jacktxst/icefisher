@@ -2,22 +2,10 @@ extends Node
 
 var items = [
 	{
-		"max_count":64,
-		"holdable": false,
-		"name":"Normal Bait",},
-	{
 		"max_count":1,
 		"holdable": true,
 		"name":"Ice Drill",
 		"viewmodel":"res://models/viewmodels/drill.obj"},
-	{
-		"max_count":1,
-		"holdable": false,
-		"name":"Fish"},
-	{
-		"max_count":999,
-		"holdable": false,
-		"name":"Money"},
 	{
 		"max_count":1,
 		"holdable": true,
@@ -25,8 +13,37 @@ var items = [
 		"viewmodel":"res://models/viewmodels/rod1.obj"},
 	{
 		"max_count":1,
+		"holdable": true,
+		"name":"Power Rod",
+		"viewmodel":"res://models/viewmodels/rod1.obj"},
+	{
+		"max_count":999,
 		"holdable": false,
-		"name":"Bobber",}
+		"name":"Money"},
+	{
+		"max_count":99,
+		"holdable": false,
+		"name":"Common Bait (Doesn't do anything)"},
+	{
+		"max_count":99,
+		"holdable": false,
+		"name":"Uncommon Bait"},
+	{
+		"max_count":99,
+		"holdable": false,
+		"name":"Rare Bait"},
+	{
+		"max_count":1,
+		"holdable": false,
+		"name":"Fish 1"},
+	{
+		"max_count":1,
+		"holdable": false,
+		"name":"Fish 2"},
+	{
+		"max_count":1,
+		"holdable": false,
+		"name":"Fish 3",}
 ]
 
 var line_is_cast : bool = false
@@ -39,13 +56,13 @@ func get_id(name):
 # This code is really bad I know
 
 func use_item(id : int):
-	if id == 1:
+	if id == 0:
 		use_ice_drill()
-	elif id == 4:
+	elif id == 1:
 		use_fishing_rod()
 
 func release_item(id : int):
-	if id == 4:
+	if id == 1:
 		release_fishing_rod()
 
 func release_fishing_rod():
@@ -90,5 +107,7 @@ func use_ice_drill():
 	if $"/root/Node3D/Icefisher".drill_energy < 1:
 		return
 	$"/root/Node3D/Icefisher".drill_energy -= 1
-	$"/root/Node3D/LakeSurface/CSGIce/CSGHole".position.x = $"/root/Node3D/Icefisher".position.x
-	$"/root/Node3D/LakeSurface/CSGIce/CSGHole".position.z = $"/root/Node3D/Icefisher".position.z
+	var hole_position = $"/root/Node3D/Icefisher".position
+	hole_position -= $/root/Node3D/Icefisher.transform.basis.z * 2
+	$"/root/Node3D/LakeSurface/CSGIce/CSGHole".position.x = hole_position.x
+	$"/root/Node3D/LakeSurface/CSGIce/CSGHole".position.z = hole_position.z

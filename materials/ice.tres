@@ -6,3 +6,4 @@
 transparency = 1
 albedo_texture = ExtResource("1_dx87l")
 uv1_scale = Vector3(16, 16, 16)
+texture_filter = 0

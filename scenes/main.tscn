@@ -1,12 +1,14 @@
-[gd_scene load_steps=41 format=3 uid="uid://bnm7vcoe3yxbc"]
+[gd_scene load_steps=43 format=3 uid="uid://bnm7vcoe3yxbc"]
 
 [ext_resource type="Script" path="res://scripts/items.gd" id="1_7t2mv"]
 [ext_resource type="Script" path="res://scripts/player.gd" id="2_onobx"]
 [ext_resource type="LabelSettings" uid="uid://4gpdmnytqaa0" path="res://LabelSetting.tres" id="3_238ka"]
+[ext_resource type="Environment" uid="uid://d2vvpsanexrso" path="res://camera_env.tres" id="3_gk565"]
 [ext_resource type="Script" path="res://scripts/inventory_panel.gd" id="4_urc4l"]
 [ext_resource type="ArrayMesh" uid="uid://7l7te5yrosnk" path="res://models/viewmodels/drill.obj" id="5_q8fh2"]
 [ext_resource type="Material" uid="uid://bkw5rn03p8voc" path="res://materials/ice.tres" id="5_shh4w"]
 [ext_resource type="Shader" path="res://water.gdshader" id="6_o5xlq"]
+[ext_resource type="Texture2D" uid="uid://b3j8wseblrfcv" path="res://materials/powermeter.png" id="7_2seol"]
 [ext_resource type="Script" path="res://scripts/water_surface_triggers.gd" id="7_5y3qv"]
 [ext_resource type="Script" path="res://scripts/ice_hole.gd" id="7_akipc"]
 [ext_resource type="Script" path="res://addons/zylann.hterrain/hterrain.gd" id="8_bj8mh"]
@@ -16,12 +18,12 @@
 [ext_resource type="Texture2D" uid="uid://dl46lx0kcd5uv" path="res://terrain_textures/stone-1024.jpg" id="12_q3b4j"]
 [ext_resource type="Texture2D" uid="uid://erpgs7eh448m" path="res://terrain_textures/skyfinal_0.png" id="13_s4pnj"]
 [ext_resource type="Script" path="res://scripts/item_pickup.gd" id="14_tx6ee"]
-[ext_resource type="PackedScene" uid="uid://1ptiph4cakk3" path="res://scenes/jackshop.tscn" id="15_r0oxv"]
+[ext_resource type="PackedScene" uid="uid://1ptiph4cakk3" path="res://scenes/shop_npc.tscn" id="15_r0oxv"]
 [ext_resource type="Material" uid="uid://dds1vc2y7ker8" path="res://materials/bobber.tres" id="17_1b7vg"]
 [ext_resource type="Script" path="res://scripts/fish_spawner.gd" id="17_cl6lf"]
-[ext_resource type="ArrayMesh" uid="uid://brlvpykvxdubs" path="res://models/roca.obj" id="18_hl7vu"]
-[ext_resource type="PackedScene" uid="uid://clciuvifd52er" path="res://scenes/Crappie.tscn" id="18_pg715"]
-[ext_resource type="ArrayMesh" uid="uid://bsjqiw56rbxrs" path="res://models/Tree3.obj" id="19_mynqp"]
+[ext_resource type="PackedScene" uid="uid://clciuvifd52er" path="res://scenes/fish/Fish.tscn" id="18_pg715"]
+[ext_resource type="PackedScene" uid="uid://cinem1rmhnx47" path="res://scenes/fish/Fish2.tscn" id="22_vix4p"]
+[ext_resource type="PackedScene" uid="uid://bmflw4h6h6ufw" path="res://scenes/fish/Fish3.tscn" id="24_m83kk"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5kjdr"]
 
@@ -78,12 +80,11 @@ filter = false
 [sub_resource type="Sky" id="Sky_q2qbv"]
 sky_material = SubResource("PanoramaSkyMaterial_mxbxr")
 
-[sub_resource type="Environment" id="Environment_e3ypr"]
+[sub_resource type="Environment" id="Environment_gake3"]
 background_mode = 2
 sky = SubResource("Sky_q2qbv")
-ambient_light_source = 3
+ambient_light_source = 1
 reflected_light_source = 1
-fog_enabled = true
 fog_depth_curve = 4.59479
 volumetric_fog_density = 0.3294
 
@@ -98,7 +99,7 @@ data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0
 script = ExtResource("1_7t2mv")
 
 [node name="Icefisher" type="CharacterBody3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -59.246, 3.23687, 3.01443)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -60.765, 3.23687, 3.88509)
 collision_layer = 4
 collision_mask = 19
 script = ExtResource("2_onobx")
@@ -107,11 +108,17 @@ script = ExtResource("2_onobx")
 shape = SubResource("CapsuleShape3D_5kjdr")
 
 [node name="Camera3D" type="Camera3D" parent="Icefisher"]
+environment = ExtResource("3_gk565")
 current = true
 
 [node name="RayCast3D" type="RayCast3D" parent="Icefisher/Camera3D"]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, -1, 0, 1, -4.37114e-08, 0, 0, 0)
 collision_mask = 16
+
+[node name="WeaponViewModel" type="MeshInstance3D" parent="Icefisher/Camera3D"]
+transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0.437, -0.5, -1.081)
+mesh = ExtResource("5_q8fh2")
+skeleton = NodePath("../..")
 
 [node name="SelectedItemLabel" type="Label" parent="Icefisher"]
 offset_left = 1.0
@@ -154,15 +161,24 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -40.0
-offset_top = -13.5
-offset_right = 40.0
-offset_bottom = 13.5
+offset_left = -71.0
+offset_top = -13.0
+offset_right = 73.0
+offset_bottom = 14.0
 grow_horizontal = 2
 grow_vertical = 2
 max_value = 10.0
 value = 10.0
 show_percentage = false
+
+[node name="TextureRect" type="TextureRect" parent="Icefisher/QuickTimeProgressBar"]
+z_index = -4
+layout_mode = 0
+offset_left = -16.0
+offset_top = -70.0
+offset_right = 159.0
+offset_bottom = 76.0
+texture = ExtResource("7_2seol")
 
 [node name="DeathScreen" type="ColorRect" parent="Icefisher"]
 visible = false
@@ -173,9 +189,11 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="WeaponViewModel" type="MeshInstance3D" parent="Icefisher"]
-transform = Transform3D(0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0.436726, 0, -1.08113)
-mesh = ExtResource("5_q8fh2")
+[node name="PosLabel" type="Label" parent="Icefisher"]
+offset_left = 11.0
+offset_top = 572.0
+offset_right = 201.0
+offset_bottom = 643.0
 
 [node name="LakeSurface" type="StaticBody3D" parent="."]
 transform = Transform3D(128, 0, 0, 0, 128, 0, 0, 0, 128, 0, 0, 0)
@@ -278,65 +296,309 @@ shader_params/u_globalmap_blend_start = null
 shader_params/u_globalmap_blend_distance = null
 shader_params/u_colormap_opacity_per_texture = null
 
-[node name="Roca" type="MeshInstance3D" parent="HTerrain"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -56.2045, 0.0639992, 57.3312)
-mesh = ExtResource("18_hl7vu")
-skeleton = NodePath("../..")
-
-[node name="Tree3" type="MeshInstance3D" parent="HTerrain"]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -61.831, 0.0640001, 69.1614)
-mesh = ExtResource("19_mynqp")
-skeleton = NodePath("../..")
-
-[node name="Tree4" type="MeshInstance3D" parent="HTerrain"]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -41.1788, 0.0640001, 56.4111)
-mesh = ExtResource("19_mynqp")
-skeleton = NodePath("../..")
-
-[node name="Tree5" type="MeshInstance3D" parent="HTerrain"]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -61.831, 0.0640001, 34.3144)
-mesh = ExtResource("19_mynqp")
-skeleton = NodePath("../..")
-
-[node name="Tree6" type="MeshInstance3D" parent="HTerrain"]
-transform = Transform3D(4, 0, 0, 0, 4, 0, 0, 0, 4, -61.831, 0.0640001, 56.4111)
-mesh = ExtResource("19_mynqp")
-skeleton = NodePath("../..")
-
-[node name="CrappieSpawner" type="Node3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -75.1634, 0, 17.2881)
-script = ExtResource("17_cl6lf")
-minimum_wait = 1.0
-maximum_wait = 4.0
-far_distance = 5.0
-near_distance = 1.0
-population_cap = 1
-
-[node name="crappie" parent="CrappieSpawner" instance=ExtResource("18_pg715")]
-skeleton = NodePath("../..")
-item_id = 2
-
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
-environment = SubResource("Environment_e3ypr")
+environment = SubResource("Environment_gake3")
 
 [node name="Jackshop" parent="." instance=ExtResource("15_r0oxv")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -63.8388, 1.65817, -18.4445)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -55.573, 0.5, 9.895)
 
-[node name="TestItemPickup" type="Area3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -46.7751, 1.17544, 14.9859)
+[node name="RareBaitPickups" type="Node" parent="."]
+
+[node name="RareBaitPickup5" type="Area3D" parent="RareBaitPickups"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 279.239, 101.956, -106.817)
 collision_mask = 4
 script = ExtResource("14_tx6ee")
+item_id = 6
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="TestItemPickup"]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RareBaitPickups/RareBaitPickup5"]
 mesh = SubResource("BoxMesh_ocjgr")
 surface_material_override/0 = ExtResource("17_1b7vg")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="TestItemPickup"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RareBaitPickups/RareBaitPickup5"]
 shape = SubResource("ConcavePolygonShape3D_brfqu")
+
+[node name="RareBaitPickup6" type="Area3D" parent="RareBaitPickups"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -206.049, 66.7589, -300.588)
+collision_mask = 4
+script = ExtResource("14_tx6ee")
+item_id = 6
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RareBaitPickups/RareBaitPickup6"]
+mesh = SubResource("BoxMesh_ocjgr")
+surface_material_override/0 = ExtResource("17_1b7vg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RareBaitPickups/RareBaitPickup6"]
+shape = SubResource("ConcavePolygonShape3D_brfqu")
+
+[node name="RareBaitPickup7" type="Area3D" parent="RareBaitPickups"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -125.907, 80.1738, 162.453)
+collision_mask = 4
+script = ExtResource("14_tx6ee")
+item_id = 6
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="RareBaitPickups/RareBaitPickup7"]
+mesh = SubResource("BoxMesh_ocjgr")
+surface_material_override/0 = ExtResource("17_1b7vg")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="RareBaitPickups/RareBaitPickup7"]
+shape = SubResource("ConcavePolygonShape3D_brfqu")
+
+[node name="FishSpawners" type="Node" parent="."]
+
+[node name="FishSpawners1" type="Node" parent="FishSpawners"]
+
+[node name="CrappieSpawner" type="Node3D" parent="FishSpawners/FishSpawners1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -75.1634, -7.90193, 17.2881)
+script = ExtResource("17_cl6lf")
+minimum_wait = 2.5
+maximum_wait = 7.5
+far_distance = 40.0
+near_distance = 10.0
+population_cap = 10
+
+[node name="crappie" parent="FishSpawners/FishSpawners1/CrappieSpawner" instance=ExtResource("18_pg715")]
+visible = false
+skeleton = NodePath("../../../..")
+
+[node name="CrappieSpawner4" type="Node3D" parent="FishSpawners/FishSpawners1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -204.665, -7.90193, -124.006)
+script = ExtResource("17_cl6lf")
+minimum_wait = 2.5
+maximum_wait = 7.5
+far_distance = 40.0
+near_distance = 10.0
+population_cap = 10
+
+[node name="crappie" parent="FishSpawners/FishSpawners1/CrappieSpawner4" instance=ExtResource("18_pg715")]
+visible = false
+skeleton = NodePath("../../../..")
+
+[node name="CrappieSpawner5" type="Node3D" parent="FishSpawners/FishSpawners1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 44.9192, -7.90193, 51.1525)
+script = ExtResource("17_cl6lf")
+minimum_wait = 2.5
+maximum_wait = 7.5
+far_distance = 40.0
+near_distance = 10.0
+population_cap = 10
+
+[node name="crappie" parent="FishSpawners/FishSpawners1/CrappieSpawner5" instance=ExtResource("18_pg715")]
+visible = false
+skeleton = NodePath("../../../..")
+
+[node name="CrappieSpawner3" type="Node3D" parent="FishSpawners/FishSpawners1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -104.255, -6.01979, 38.4347)
+script = ExtResource("17_cl6lf")
+minimum_wait = 2.5
+maximum_wait = 7.5
+far_distance = 40.0
+near_distance = 10.0
+population_cap = 10
+
+[node name="crappie" parent="FishSpawners/FishSpawners1/CrappieSpawner3" instance=ExtResource("18_pg715")]
+visible = false
+skeleton = NodePath("../../../..")
+
+[node name="CrappieSpawner2" type="Node3D" parent="FishSpawners/FishSpawners1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -86.6119, -5.9728, -32.4031)
+script = ExtResource("17_cl6lf")
+minimum_wait = 2.5
+maximum_wait = 7.5
+far_distance = 40.0
+near_distance = 10.0
+population_cap = 10
+
+[node name="crappie" parent="FishSpawners/FishSpawners1/CrappieSpawner2" instance=ExtResource("18_pg715")]
+visible = false
+skeleton = NodePath("../../../..")
+
+[node name="FishSpawners2" type="Node" parent="FishSpawners"]
+
+[node name="FishSpawner" type="Node3D" parent="FishSpawners/FishSpawners2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 20.3366, -7.90194, 67.008)
+script = ExtResource("17_cl6lf")
+minimum_wait = 2.5
+maximum_wait = 7.5
+far_distance = 40.0
+near_distance = 5.0
+population_cap = 5
+
+[node name="Fish2" parent="FishSpawners/FishSpawners2/FishSpawner" instance=ExtResource("22_vix4p")]
+visible = false
+
+[node name="FishSpawner2" type="Node3D" parent="FishSpawners/FishSpawners2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 98.862, -4.18214, 46.5642)
+script = ExtResource("17_cl6lf")
+minimum_wait = 2.5
+maximum_wait = 7.5
+far_distance = 40.0
+near_distance = 5.0
+population_cap = 5
+
+[node name="Fish2" parent="FishSpawners/FishSpawners2/FishSpawner2" instance=ExtResource("22_vix4p")]
+visible = false
+
+[node name="FishSpawner3" type="Node3D" parent="FishSpawners/FishSpawners2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 67.7048, -4.18214, 61.0719)
+script = ExtResource("17_cl6lf")
+minimum_wait = 2.5
+maximum_wait = 7.5
+far_distance = 40.0
+near_distance = 5.0
+population_cap = 5
+
+[node name="Fish2" parent="FishSpawners/FishSpawners2/FishSpawner3" instance=ExtResource("22_vix4p")]
+visible = false
+
+[node name="FishSpawners3" type="Node" parent="FishSpawners"]
+
+[node name="FishSpawner" type="Node3D" parent="FishSpawners/FishSpawners3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -204.386, -2.74377, -147.204)
+script = ExtResource("17_cl6lf")
+minimum_wait = 2.5
+maximum_wait = 7.5
+far_distance = 40.0
+near_distance = 5.0
+population_cap = 5
+
+[node name="Fish2" parent="FishSpawners/FishSpawners3/FishSpawner" instance=ExtResource("22_vix4p")]
+visible = false
+
+[node name="FishSpawner4" type="Node3D" parent="FishSpawners/FishSpawners3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 39.3797, -2.74377, 223.059)
+script = ExtResource("17_cl6lf")
+minimum_wait = 2.5
+maximum_wait = 7.5
+far_distance = 40.0
+near_distance = 5.0
+population_cap = 5
+
+[node name="Fish2" parent="FishSpawners/FishSpawners3/FishSpawner4" instance=ExtResource("22_vix4p")]
+visible = false
+
+[node name="FishSpawner5" type="Node3D" parent="FishSpawners/FishSpawners3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 213.877, -2.74377, 164.884)
+script = ExtResource("17_cl6lf")
+minimum_wait = 2.5
+maximum_wait = 7.5
+far_distance = 40.0
+near_distance = 5.0
+population_cap = 5
+
+[node name="Fish2" parent="FishSpawners/FishSpawners3/FishSpawner5" instance=ExtResource("22_vix4p")]
+visible = false
+
+[node name="FishSpawner2" type="Node3D" parent="FishSpawners/FishSpawners3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -154.51, -4.18214, -114.488)
+script = ExtResource("17_cl6lf")
+minimum_wait = 2.5
+maximum_wait = 7.5
+far_distance = 40.0
+near_distance = 5.0
+population_cap = 5
+
+[node name="Fish2" parent="FishSpawners/FishSpawners3/FishSpawner2" instance=ExtResource("22_vix4p")]
+visible = false
+
+[node name="FishSpawner3" type="Node3D" parent="FishSpawners/FishSpawners3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -222.02, -4.18214, -135.302)
+script = ExtResource("17_cl6lf")
+minimum_wait = 2.5
+maximum_wait = 7.5
+far_distance = 40.0
+near_distance = 5.0
+population_cap = 5
+
+[node name="Fish2" parent="FishSpawners/FishSpawners3/FishSpawner3" instance=ExtResource("22_vix4p")]
+visible = false
+
+[node name="FishSpawners4" type="Node" parent="FishSpawners"]
+
+[node name="FishSpawner" type="Node3D" parent="FishSpawners/FishSpawners4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -79.5466, -3.16163, -242.911)
+script = ExtResource("17_cl6lf")
+minimum_wait = 2.5
+maximum_wait = 7.5
+far_distance = 40.0
+near_distance = 5.0
+population_cap = 2
+
+[node name="Fish3" parent="FishSpawners/FishSpawners4/FishSpawner" instance=ExtResource("24_m83kk")]
+visible = false
+height = 1
+width = 3
+length = 3
+bait_level = 3
+
+[node name="FishSpawner2" type="Node3D" parent="FishSpawners/FishSpawners4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 237.067, -3.16163, -16.6005)
+script = ExtResource("17_cl6lf")
+minimum_wait = 2.5
+maximum_wait = 7.5
+far_distance = 40.0
+near_distance = 5.0
+population_cap = 2
+
+[node name="Fish3" parent="FishSpawners/FishSpawners4/FishSpawner2" instance=ExtResource("24_m83kk")]
+visible = false
+height = 1
+width = 3
+length = 3
+bait_level = 3
+
+[node name="FishSpawner3" type="Node3D" parent="FishSpawners/FishSpawners4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -247.578, -3.16163, 97.4792)
+script = ExtResource("17_cl6lf")
+minimum_wait = 2.5
+maximum_wait = 7.5
+far_distance = 40.0
+near_distance = 5.0
+population_cap = 2
+
+[node name="Fish3" parent="FishSpawners/FishSpawners4/FishSpawner3" instance=ExtResource("24_m83kk")]
+visible = false
+height = 1
+width = 3
+length = 3
+bait_level = 3
+
+[node name="FishSpawner5" type="Node3D" parent="FishSpawners/FishSpawners4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 43.138, -3.16163, 225.825)
+script = ExtResource("17_cl6lf")
+minimum_wait = 2.5
+maximum_wait = 7.5
+far_distance = 40.0
+near_distance = 5.0
+population_cap = 2
+
+[node name="Fish3" parent="FishSpawners/FishSpawners4/FishSpawner5" instance=ExtResource("24_m83kk")]
+visible = false
+height = 1
+width = 3
+length = 3
+bait_level = 3
+
+[node name="FishSpawner4" type="Node3D" parent="FishSpawners/FishSpawners4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 170.499, -3.16163, -235.787)
+script = ExtResource("17_cl6lf")
+minimum_wait = 2.5
+maximum_wait = 7.5
+far_distance = 40.0
+near_distance = 5.0
+population_cap = 2
+
+[node name="Fish3" parent="FishSpawners/FishSpawners4/FishSpawner4" instance=ExtResource("24_m83kk")]
+visible = false
+height = 1
+width = 3
+length = 3
+bait_level = 3
 
 [connection signal="body_entered" from="LakeSurface/CSGIce/CSGHole/EnterWaterArea3D" to="LakeSurface/CSGIce/CSGHole/EnterWaterArea3D" method="_on_body_entered"]
 [connection signal="body_exited" from="LakeSurface/CSGIce/CSGHole/EnterWaterArea3D" to="LakeSurface/CSGIce/CSGHole/EnterWaterArea3D" method="_on_body_exited"]
 [connection signal="body_entered" from="LakeSurface/CSGIce/CSGHole/EnterAirArea3D" to="LakeSurface/CSGIce/CSGHole/EnterAirArea3D" method="_on_body_entered"]
 [connection signal="body_entered" from="LakeSurface/CSGIce/CSGHole/DisableIceCollisionArea3D" to="LakeSurface/CSGIce/CSGHole/DisableIceCollisionArea3D" method="_on_body_entered"]
 [connection signal="body_exited" from="LakeSurface/CSGIce/CSGHole/DisableIceCollisionArea3D" to="LakeSurface/CSGIce/CSGHole/DisableIceCollisionArea3D" method="_on_body_exited"]
-[connection signal="body_entered" from="TestItemPickup" to="TestItemPickup" method="_on_body_entered"]
+[connection signal="body_entered" from="RareBaitPickups/RareBaitPickup5" to="RareBaitPickups/RareBaitPickup5" method="_on_body_entered"]
+[connection signal="body_entered" from="RareBaitPickups/RareBaitPickup6" to="RareBaitPickups/RareBaitPickup6" method="_on_body_entered"]
+[connection signal="body_entered" from="RareBaitPickups/RareBaitPickup7" to="RareBaitPickups/RareBaitPickup7" method="_on_body_entered"]
